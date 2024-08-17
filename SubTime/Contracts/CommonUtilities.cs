@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -65,7 +66,15 @@ namespace SubTime.Contracts
                 );
             }
 
-            File.WriteAllText($"new_{filePath}", text, Encoding.GetEncoding("windows-1255"));
+            // prepare paths
+            var fileName = Path.GetFileName(filePath);
+            var filePathOnly = Path.GetDirectoryName(filePath);
+
+            // setup final file path
+            fileName = Path.Combine(filePathOnly, $"new.{fileName}");
+
+            // write to disk
+            File.WriteAllText(fileName, text, Encoding.GetEncoding("windows-1255"));
         }
     }
 }
